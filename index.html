@@ -1,0 +1,2005 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GranTES - Smart Subsidy Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="api-config.js?v=10000016"></script>
+    <script src="script.js?v=10000016"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="granteslogo.png" alt="GRANTESLOGO" width="120">
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link" onclick="showHome()">Home</a>
+                <a href="#" class="nav-link" onclick="showLogin()">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="logo">
+                <div class="logo-content">
+                    <div class="empowering-quote">
+                        <h1>"Empowering connectivity, ensuring transparency, and supporting every NEMSU Cantilan scholar."</h1>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h2>Vision</h2>
+                        <p>To be a pioneering digital platform of NEMSU Cantilan Campus that strengthens transparency, accessibility, and engagement among grantee students through an innovative and student-centered communication system.</p>
+                        
+                        <h2>Mission</h2>
+                        <p>The NEMSU Cantilan Campus Smart Subsidy Management System (GranTES) is dedicated to enhancing the flow of information and communication between the institution and its scholars. It serves as a centralized platform designed to deliver real-time updates, announcements, and essential information related to student subsidies. GranTES upholds NEMSU's core values of integrity, transparency, and service by providing grantees with an accessible space to stay informed and connected, ensuring that every scholar receives timely support and guidance throughout their academic journey.</p>
+                        
+                        <h2>About GranTES</h2>
+                        <p>North Eastern Mindanao State University – Cantilan Campus continually strives to integrate technology into education management, promoting a culture of openness and accountability. The Smart Subsidy Management System (GranTES) was established to bridge the communication gap between the university and its grantee students through a modern, responsive, and user-friendly digital platform.</p>
+                        
+                        <p>GranTES does not process, approve, or reject applications; rather, it functions as an information and communication hub for verified grantees. Students can receive instant updates regarding their grants, view important announcements, and directly message administrators for assistance or clarification. This initiative enhances efficiency and transparency in subsidy management by ensuring that all information flows clearly and promptly.</p>
+                        
+                        <p>Through GranTES, NEMSU Cantilan Campus reinforces its dedication to innovation, student welfare, and service excellence. The platform reflects the university's mission to build a digitally empowered academic community—one where every scholar remains informed, supported, and connected to the institution that values their success.</p>
+                    </div>
+                    
+                    <button onclick="openApplicationForm()" class="btn btn-primary btn-large" style="background: #10b981; border-color: #10b981;">Click to Apply</button>
+                </div>
+                <div class="logo-image">
+                    <img src="granteslogo.png" alt="GRANTESLOGO" width="350">
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="quick-links-section">
+                <div class="quick-links-header">
+                    <i class="fas fa-link"></i>
+                    <h4>Quick Links</h4>
+                </div>
+                <div class="quick-links-buttons">   
+                    <a href="https://ched.gov.ph/" target="_blank" class="quick-link-btn">
+                        <i class="fas fa-graduation-cap"></i>
+                        CHED Website
+                    </a>
+                    <button class="quick-link-btn" onclick="showGrantesList()">
+                        <i class="fas fa-list"></i>
+                        List of GranTES
+                    </button>
+                </div>
+            </div>
+
+            <!-- Public Posts Feed (Home audience) -->
+            <div class="home-feed">
+                <div class="posts-feed" id="homeFeed">
+                    <!-- Home posts will render here -->
+                </div>
+            </div>
+
+            
+            
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2>Login</h2>
+                    <p>Access your account</p>
+                </div>
+                <form class="auth-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginRole">Login as:</label>
+                        <select id="loginRole" required onchange="handleRoleChange()">
+                            <option value="">Select Role</option>
+                            <option value="student">Student</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="loginEmailGroup">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group" id="loginAwardNumberGroup" style="display: none;">
+                        <label for="loginAwardNumber">Award Number:</label>
+                        <input type="text" id="loginAwardNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Login</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Registration Section -->
+        <section id="register" class="section">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2>Student Registration</h2>
+                    <p>Create your account to apply for subsidies</p>
+                </div>
+                <form class="auth-form" onsubmit="handleRegister(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name:</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentId">Student ID:</label>
+                        <input type="text" id="studentId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email:</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password:</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password:</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department:</label>
+                        <select id="department" required>
+                            <option value="">Select Department</option>
+                            <option value="Department of Computer Studies">Department of Computer Studies</option>
+                            <option value="Department of Business and Management">Department of Business and Management</option>
+                            <option value="Department of Industrial Technology">Department of Industrial Technology</option>
+                            <option value="Department of General Teacher Training">Department of General Teacher Training</option>
+                            <option value="College of Criminal Justice Education">College of Criminal Justice Education</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="course">Course:</label>
+                            <input type="text" id="course" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="year">Year Level:</label>
+                            <select id="year" required>
+                                <option value="">Select Year</option>
+                                <option value="1st">1st Year</option>
+                                <option value="2nd">2nd Year</option>
+                                <option value="3rd">3rd Year</option>
+                                <option value="4th">4th Year</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Register</button>
+                    <p class="auth-switch">Already have an account? <a href="#" onclick="showLogin()">Login here</a></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Student Homepage -->
+        <section id="student-homepage" class="section">
+            <div class="admin-layout">
+                <!-- Left Sidebar -->
+                <div class="admin-sidebar">
+                    <h2>Student Portal</h2>
+                    <div class="sidebar-stats">
+                        <div class="sidebar-stat-card" onclick="openStudentMessages()" style="cursor: pointer; position: relative;">
+                            <i class="fas fa-bell"></i>
+                            <div class="stat-info">
+                                <h3>Notifications</h3>
+                            </div>
+                            <span id="studentNotificationsBadge" class="notification-badge" style="display: none; background: #ef4444; color: white; border-radius: 10px; padding: 2px 6px; font-size: 11px; font-weight: 600; margin-left: 6px; min-width: 18px; text-align: center; position: absolute; top: 10px; right: 10px;">0</span>
+                        </div>
+                    </div>
+                    <div class="profile-card" style="margin-top: 1rem;">
+                        <div class="profile-card-header" onclick="showStudentProfile()" style="cursor: pointer;">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="profile-header-text">
+                                <span class="profile-label">Profile</span>
+                            </div>
+                            <span class="status-badge" id="profileStatus"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="admin-main-content">
+                    <div class="admin-content-header">
+                        <button class="admin-homepage-btn" onclick="showStudentTab('homepage')">
+                            <i class="fas fa-home"></i>
+                            Student Homepage
+                        </button>
+                        <div class="user-info">
+                            <span id="studentName"></span>
+                            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-content-body">
+                        <!-- Student Homepage Content -->
+                        <div id="student-homepage-content" class="admin-homepage-content">
+                            <!-- Posts Feed -->
+                            <div class="posts-feed" id="studentPostsFeed">
+                                <div class="welcome-message">
+                                    <h3>Welcome to the Student Portal</h3>
+                                    <p>Stay updated with announcements and communicate with the administration team.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Tabs -->
+                        <div class="admin-nav-tabs">
+                            <button class="nav-tab-btn" onclick="showStudentTab('announcements')">
+                                Announcements
+                                <span id="studentAnnouncementsBadge" class="notification-badge" style="display: none; background: #ef4444; color: white; border-radius: 10px; padding: 2px 6px; font-size: 11px; font-weight: 600; margin-left: 6px; min-width: 18px; text-align: center;">0</span>
+                            </button>
+                            <button class="nav-tab-btn" onclick="showStudentTab('messages')">
+                                Messages
+                                <span id="studentMessagesBadge" class="notification-badge" style="display: none; background: #ef4444; color: white; border-radius: 10px; padding: 2px 6px; font-size: 11px; font-weight: 600; margin-left: 6px; min-width: 18px; text-align: center;">0</span>
+                            </button>
+                            <button class="nav-tab-btn" onclick="showStudentTab('claimed-dates')">
+                                Claimed Date
+                            </button>
+                        </div>
+
+                        <!-- Tab Content (hidden by default) -->
+                        <div class="tab-content" style="display: none;">
+                            <!-- Announcements Tab -->
+                            <div id="announcements-tab" class="tab-panel active">
+                                <div class="announcements-section">
+                                    <h3>Announcements & Posts</h3>
+                                    <p>Stay updated with the latest news and announcements from the administration</p>
+                                    <div class="posts-feed" id="studentAnnouncementsFeed">
+                                        <!-- Admin posts will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Messages Tab -->
+                            <div id="messages-tab" class="tab-panel">
+                                <div class="messages-section">
+                                    <h3>Direct Messages</h3>
+                                    <p>Chat directly with the administration team</p>
+                                    <div class="messenger-container">
+                                        <div class="messenger-chat" id="studentMessengerChat">
+                                            <div class="chat-messages" id="studentChatMessages">
+                                                <!-- Chat messages will be loaded here -->
+                                            </div>
+                                            <div class="chat-input-container">
+                                                <div class="chat-input-wrapper">
+                                                    <button type="button" class="chat-attach-btn" onclick="triggerFileUpload()" title="Attach file">
+                                                        <i class="fas fa-paperclip"></i>
+                                                    </button>
+                                                    <input type="file" id="chatFileInput" style="display: none" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+                                                    <input type="text" id="chatMessageInput" placeholder="Type a message..." onkeypress="handleChatKeyPress(event)">
+                                                    <button class="chat-send-btn" onclick="sendMessage()" title="Send message">
+                                                        <i class="fas fa-paper-plane"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Claimed Dates Tab -->
+                            <div id="claimed-dates-tab" class="tab-panel">
+                                <div class="claimed-dates-section">
+                                    <h3>My Claimed Dates</h3>
+                                    <p>View all the dates when you claimed your grant</p>
+                                    <div id="studentClaimedDatesContainer" style="margin-top: 1.5rem;">
+                                        <div class="loading-message">Loading claimed dates...</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Profile Panel (shown programmatically) -->
+                            <div id="profile-tab" class="tab-panel">
+                                <div class="profile-card">
+                                    <div class="profile-card-header">
+                                        <div class="profile-avatar">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <div class="profile-header-text">
+                                            <h3 id="profileNameMain"></h3>
+                                            <div class="profile-meta">
+                                                <span id="profileEmailMain"></span>
+                                                <span class="dot">•</span>
+                                                <span id="profileStudentIdMain"></span>
+                                            </div>
+                                        </div>
+                                        <span class="status-badge" id="profileStatusMain"></span>
+                                    </div>
+                                    <div class="profile-info-grid">
+                                        <div class="profile-tile">
+                                            <div class="tile-icon"><i class="fas fa-building-columns"></i></div>
+                                            <div class="tile-content">
+                                                <div class="tile-label">Department</div>
+                                                <div class="tile-value" id="profileDepartmentMain"></div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-tile">
+                                            <div class="tile-icon"><i class="fas fa-location-dot"></i></div>
+                                            <div class="tile-content">
+                                                <div class="tile-label">From</div>
+                                                <div class="tile-value" id="profilePlaceMain"></div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-tile">
+                                            <div class="tile-icon"><i class="fas fa-book"></i></div>
+                                            <div class="tile-content">
+                                                <div class="tile-label">Course</div>
+                                                <div class="tile-value" id="profileCourseMain"></div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-tile">
+                                            <div class="tile-icon"><i class="fas fa-layer-group"></i></div>
+                                            <div class="tile-content">
+                                                <div class="tile-label">Year Level</div>
+                                                <div class="tile-value" id="profileYearMain"></div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-tile">
+                                            <div class="tile-icon"><i class="fas fa-id-card"></i></div>
+                                            <div class="tile-content">
+                                                <div class="tile-label">Award Number</div>
+                                                <div class="tile-value" id="profileAwardNumberMain"></div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-tile">
+                                            <div class="tile-icon"><i class="fas fa-people-group"></i></div>
+                                            <div class="tile-content">
+                                                <div class="tile-label">Indigenous People</div>
+                                                <div class="tile-value" id="profileIndigenousMain"></div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-tile">
+                                            <div class="tile-icon"><i class="fas fa-wheelchair"></i></div>
+                                            <div class="tile-content">
+                                                <div class="tile-label">PWD's</div>
+                                                <div class="tile-value" id="profilePwdMain"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard -->
+        <section id="admin-dashboard" class="section">
+            <div class="admin-layout">
+                <!-- Left Sidebar -->
+                <div class="admin-sidebar">
+                    <h2>Admin Dashboard</h2>
+                    <div class="sidebar-stats">
+                        <div class="sidebar-stat-card">
+                            <i class="fas fa-users"></i>
+                            <div class="stat-info">
+                                <h3>Total Students</h3>
+                                <p id="totalStudents">0</p>
+                            </div>
+                        </div>
+                        <div class="sidebar-stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <div class="stat-info">
+                                <h3>INDIGENOUS PEOPLE</h3>
+                                <p id="totalIndigenous">0</p>
+                            </div>
+                        </div>
+                        <div class="sidebar-stat-card">
+                            <i class="fas fa-clock"></i>
+                            <div class="stat-info">
+                                <h3>PWD's</h3>
+                                <p id="totalPwd">0</p>
+                            </div>
+                        </div>
+                        <div class="sidebar-stat-card">
+                            <i class="fas fa-archive"></i>
+                            <div class="stat-info">
+                                <h3>Archived</h3>
+                                <p id="totalArchived">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="admin-main-content">
+                    <div class="admin-content-header">
+                        <button class="admin-homepage-btn" onclick="showAdminTab('homepage'); updateAdminStats();">
+                            <i class="fas fa-home"></i>
+                            Admin Homepage
+                        </button>
+                        <div class="user-info">
+                            <span>Administrator</span>
+                            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-content-body">
+                        <!-- Admin Homepage Content -->
+                        <div id="admin-homepage" class="admin-homepage-content">
+                            <!-- Admin Quick Actions -->
+                            <div class="admin-quick-actions">
+                                <div class="quick-actions-left">
+                                    <!-- View Applications removed -->
+                                    <button class="quick-action-btn manage-students" onclick="openManageStudents()">
+                                        <i class="fas fa-users"></i>
+                                        <span>Manage Students</span>
+                                    </button>
+                                    <button class="quick-action-btn students-claimed-date" onclick="openStudentsClaimedDate()">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <span>Students Claimed Date</span>
+                                    </button>
+                                </div>
+                                <div class="quick-actions-right">
+                                    <button class="quick-action-btn notification-message" onclick="openStudentNamesList()">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Notification Message</span>
+                                        <span class="notification-badge" id="notificationMessageBadge" style="display: none;">0</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Post Creation Interface -->
+                            <div class="post-creation-container">
+                                <div class="post-creation-header">
+                                    <div class="admin-profile-pic">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <div class="post-input-container">
+                                        <input type="text" id="postInput" placeholder="What's on your mind, Administrator?" class="post-input" onkeypress="handlePostKeyPress(event)">
+                                        <div class="post-audience-selector">
+                                            <select id="postAudience" class="audience-select">
+                                                <option value="students">GranTES Students</option>
+                                                <option value="home">Home Page</option>
+                                            </select>
+                                            <select id="postCourse" class="course-select" style="display: none;">
+                                                <option value="">Select Course</option>
+                                                <option value="BSIT">BSIT</option>
+                                                <option value="BSCS">BSCS</option>
+                                                <option value="BSBA">BSBA</option>
+                                                <option value="BSEd">BSEd</option>
+                                                <option value="BSN">BSN</option>
+                                            </select>
+                                        </div>
+                                        <!-- Image preview and hidden file input for post -->
+                                        <div class="post-image-preview" id="postImagePreview" style="display:none;">
+                                            <img id="postImagePreviewImg" alt="Selected image preview">
+                                            <span class="post-image-count-badge" id="postImageCount" style="display:none;">+0</span>
+                                            <button type="button" class="clear-image-btn" onclick="clearPostImage()" title="Remove image"><i class="fas fa-times"></i></button>
+                                        </div>
+                                        <input type="file" id="postImageInput" accept="image/*" multiple style="display:none" onchange="handlePostImagesSelected(event)">
+                                    </div>
+                                </div>
+                                <div class="post-separator"></div>
+                                <div class="post-actions">
+                                    <button class="post-action-btn photo-video" onclick="triggerPostImageUpload()">
+                                        <i class="fas fa-images"></i>
+                                        <span>Photo/video</span>
+                                    </button>
+                                    <button class="post-action-btn emoji-btn" onclick="showEmojiPicker()">
+                                        <i class="fas fa-smile"></i>
+                                        <span>Emoji</span>
+                                    </button>
+                                    <button type="button" class="post-action-btn publish" onclick="publishPost()">
+                                        <i class="fas fa-paper-plane"></i>
+                                        <span>Publish</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Posts Feed -->
+                            <div class="posts-feed" id="postsFeed">
+                                <div class="welcome-message">
+                                    <h3>Welcome to the Admin Dashboard</h3>
+                                    <p>Manage student applications, view reports, and configure system settings from this central location.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Tabs -->
+                        <div class="admin-nav-tabs" style="display: flex !important; visibility: visible !important;">
+                            <button class="nav-tab-btn" onclick="event.preventDefault(); showAdminTab('applications');" style="display: inline-block !important; visibility: visible !important;">Applications</button>
+                            <button class="nav-tab-btn" onclick="event.preventDefault(); showAdminTab('students');" style="display: inline-block !important; visibility: visible !important;">Students</button>
+                            <button class="nav-tab-btn" onclick="event.preventDefault(); showAdminTab('reports');" style="display: inline-block !important; visibility: visible !important;">Reports</button>
+                            <button class="nav-tab-btn active" onclick="event.preventDefault(); showAdminTab('settings');" style="display: inline-block !important; visibility: visible !important;">Settings</button>
+                        </div>
+
+                        <!-- Tab Content (hidden by default) -->
+                        <div class="tab-content" style="display: none;">
+                    <!-- Applications Tab -->
+                    <div id="applications-tab" class="tab-panel" style="display: none;">
+                        <div class="applications-list" style="padding: 1.5rem;">
+                            <h3 style="margin-bottom: 1rem; color: #1e293b;">Student Applications</h3>
+                            <div class="filter-bar" style="margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center;">
+                                <input type="text" id="searchApplications" placeholder="Search by student name..." style="flex: 1; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; outline: none;" onkeyup="searchApplicationsTable()">
+                                <button class="btn btn-primary" onclick="searchApplicationsTable()" style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                                <button class="btn btn-secondary" onclick="clearApplicationsSearch()" style="padding: 10px 20px; background: #64748b; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                                    <i class="fas fa-times"></i> Clear
+                                </button>
+                                <button class="btn btn-primary" onclick="generateApplicationsExcel()" style="padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                                    <i class="fas fa-file-excel"></i> Generate Applications
+                                </button>
+                            </div>
+                            <div id="applicationsContainer" style="background: white; border-radius: 8px; padding: 1rem;">
+                                <p class="no-data">Loading applications...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Students Tab -->
+                    <div id="students-tab" class="tab-panel">
+                        <div class="students-list">
+                            <h3>Student Records</h3>
+                            <div class="filter-bar">
+                                <select id="studentStatusFilter" onchange="filterStudents()">
+                                    <option value="">All Students</option>
+                                    <option value="active">Active</option>
+                                    <option value="archived">Archived</option>
+                                </select>
+                                <input type="text" id="searchStudentRecords" placeholder="Search students..." onkeyup="searchStudents()">
+                            </div>
+                            <div id="studentsContainer">
+                                <p class="no-data">No students found.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Tab -->
+                    <div id="reports-tab" class="tab-panel">
+                        <div class="reports-section">
+                            <h3>Reports & Analytics</h3>
+                            <div class="report-cards">
+                                <div class="report-card">
+                                    <h4>Department Analysis</h4>
+                                    <canvas id="departmentChart" width="400" height="200"></canvas>
+                                    <div id="departmentSummary" class="report-summary"></div>
+                                </div>
+                                <div class="report-card">
+                                    <h4>From Analysis</h4>
+                                    <canvas id="placeChart" width="400" height="200"></canvas>
+                                    <div id="placeSummary" class="report-summary"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="generateReport()">Generate Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settings-tab" class="tab-panel">
+                        <div class="settings-section">
+                            <h3>System Settings</h3>
+                            <div class="settings-form">
+                                <!-- Change Admin Password Section -->
+                                <div class="settings-section-card">
+                                    <h4><i class="fas fa-key"></i> Change Admin Password</h4>
+                                    <div class="form-group">
+                                        <label for="currentPassword">Current Password:</label>
+                                        <input type="password" id="currentPassword" placeholder="Enter current password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPassword">New Password:</label>
+                                        <input type="password" id="newPassword" placeholder="Enter new password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmNewPassword">Confirm New Password:</label>
+                                        <input type="password" id="confirmNewPassword" placeholder="Confirm new password">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="changeAdminPassword()">Change Password</button>
+                                </div>
+                                
+                                <!-- Change Student Password Section -->
+                                <div class="settings-section-card">
+                                    <h4><i class="fas fa-user-graduate"></i> Change Student Password</h4>
+                                    <div class="form-group">
+                                        <label for="studentSearch">Search Student:</label>
+                                        <input type="text" id="studentSearch" placeholder="Enter student name, ID, or award number" onkeyup="searchStudentsForPasswordChange()">
+                                        <div id="studentSearchResults" class="student-search-results"></div>
+                                    </div>
+                                    <div id="studentPasswordForm" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="selectedStudentInfo">Selected Student:</label>
+                                            <div id="selectedStudentInfo" class="selected-student-info"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newStudentPassword">New Password:</label>
+                                            <input type="password" id="newStudentPassword" placeholder="Enter new password for student">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirmStudentPassword">Confirm New Password:</label>
+                                            <input type="password" id="confirmStudentPassword" placeholder="Confirm new password">
+                                        </div>
+                                        <button class="btn btn-primary" onclick="changeStudentPassword()">Change Student Password</button>
+                                        <button class="btn btn-secondary" onclick="clearStudentPasswordForm()">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- Admin: Student Profile Modal -->
+    <div id="studentProfileModal" class="modal">
+        <div class="modal-content admin-student-modal">
+            <div class="modal-header">
+                <h3>Student Profile</h3>
+                <span class="close" onclick="closeStudentProfileModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="admin-student-profile">
+                    <!-- Left Column: Photo -->
+                    <div class="admin-student-left">
+                        <div class="admin-student-photo">
+                            <img id="adminStudentPhoto" alt="Student ID Picture">
+                        </div>
+                        <div class="admin-student-photo-note">ID Picture preview</div>
+                    </div>
+                    
+                    <!-- Middle Column: Student Info -->
+                    <div class="admin-student-middle">
+                        <div class="admin-student-name" id="adminStudentName"></div>
+                        <div class="admin-student-meta">
+                            <span id="adminStudentEmail"></span>
+                            <span class="dot">•</span>
+                            <span id="adminStudentId"></span>
+                        </div>
+                        <div class="admin-student-grid">
+                            <div class="admin-student-tile">
+                                <div class="label">Department</div>
+                                <div class="value" id="adminStudentDepartment"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">From</div>
+                                <div class="value" id="adminStudentPlace"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">Course</div>
+                                <div class="value" id="adminStudentCourse"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">Year Level</div>
+                                <div class="value" id="adminStudentYear"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">Student ID</div>
+                                <div class="value" id="adminStudentIdValue"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">Award Number</div>
+                                <div class="value" id="adminStudentAwardNumber"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">Status</div>
+                                <div class="value" id="adminStudentStatus"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">Registered</div>
+                                <div class="value" id="adminStudentRegistered"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">Indigenous People</div>
+                                <div class="value" id="adminStudentIndigenous"></div>
+                            </div>
+                            <div class="admin-student-tile">
+                                <div class="label">PWD's</div>
+                                <div class="value" id="adminStudentPwd"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Chat -->
+                    <div class="admin-student-right">
+                        <div class="profile-chat-container">
+                            <div class="profile-chat-header">
+                                <div style="display:flex; align-items:center; gap:0.75rem;">
+                                    <div class="profile-avatar" style="width:36px; height:36px;">
+                                        <i class="fas fa-user-graduate" style="font-size:1rem;"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight:600; line-height:1;">Chat with Student</div>
+                                        <div style="font-size:0.8rem; opacity:0.9;">Direct message thread</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-chat-messages" id="adminStudentChatMessages">
+                                <div class="chat-welcome">
+                                    <div class="welcome-message">
+                                        <i class="fas fa-comments"></i>
+                                        <h5>Start chatting</h5>
+                                        <p>Your messages will appear here.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-chat-input-container">
+                                <div class="profile-chat-input-wrapper">
+                                    <input type="text" id="adminStudentChatInput" placeholder="Write a message..." onkeydown="if(event.key==='Enter' && !event.shiftKey) { event.preventDefault(); adminSendChatMessage(event); }">
+                                    <button type="button" class="profile-chat-send-btn" onclick="adminSendChatMessage(event)" title="Send">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Approval Form Modal -->
+    <div id="applicationApprovalModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Application Approval</h3>
+                <span class="close" onclick="closeApplicationApprovalForm()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="applicationApprovalForm">
+                    <div class="form-group">
+                        <label for="approvalAwardNumber" style="display: block; margin-bottom: 8px; font-weight: 500; color: #334155;">Award Number:</label>
+                        <input type="text" id="approvalAwardNumber" placeholder="Enter award number" style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; background-color: white; font-size: 14px; outline: none;">
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="approvalPassword" style="display: block; margin-bottom: 8px; font-weight: 500; color: #334155;">Student Password:</label>
+                        <input type="text" id="approvalPassword" readonly style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; background-color: #f1f5f9; cursor: not-allowed; font-size: 14px; font-family: monospace;">
+                        <small style="display: block; margin-top: 5px; color: #64748b; font-size: 12px;">Password from application (or will be auto-generated if not provided)</small>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="approvalEmail" style="display: block; margin-bottom: 8px; font-weight: 500; color: #334155;">Student Email:</label>
+                        <input type="email" id="approvalEmail" readonly style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; background-color: #f1f5f9; cursor: not-allowed; font-size: 14px;">
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="approvalPhoneNumber" style="display: block; margin-bottom: 8px; font-weight: 500; color: #334155;">Phone Number:</label>
+                        <input type="text" id="approvalPhoneNumber" readonly style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; background-color: #f1f5f9; cursor: not-allowed; font-size: 14px;">
+                    </div>
+                    <div class="modal-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="button" class="btn btn-primary" onclick="registerAndSendCredentials()" style="flex: 1; padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">Register & Send</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeApplicationApprovalForm()" style="flex: 1; padding: 10px 20px; background: #64748b; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div id="editStudentModal" class="modal">
+        <div class="modal-content student-registration-modal">
+            <div class="modal-header">
+                <h3>Edit Student</h3>
+                <span class="close" onclick="closeEditStudentModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editStudentForm" onsubmit="handleEditStudent(event)">
+                    <input type="hidden" id="editStudentId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editFirstName">First Name:</label>
+                            <input type="text" id="editFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editLastName">Last Name:</label>
+                            <input type="text" id="editLastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email:</label>
+                        <input type="email" id="editEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDepartment">Department:</label>
+                        <select id="editDepartment" required>
+                            <option value="">Select Department</option>
+                            <option value="Department of Computer Studies">Department of Computer Studies</option>
+                            <option value="Department of Business and Management">Department of Business and Management</option>
+                            <option value="Department of Industrial Technology">Department of Industrial Technology</option>
+                            <option value="Department of General Teacher Training">Department of General Teacher Training</option>
+                            <option value="College of Criminal Justice Education">College of Criminal Justice Education</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPlace">From (Address/Origin):</label>
+                        <input type="text" id="editPlace" placeholder="e.g., City, Province" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editCourse">Course:</label>
+                            <input type="text" id="editCourse" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editYear">Year Level:</label>
+                            <select id="editYear" required>
+                                <option value="">Select Year</option>
+                                <option value="1st">1st Year</option>
+                                <option value="2nd">2nd Year</option>
+                                <option value="3rd">3rd Year</option>
+                                <option value="4th">4th Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editIsIndigenous">INDIGENOUS PEOPLE:</label>
+                            <input type="checkbox" id="editIsIndigenous">
+                        </div>
+                        <div class="form-group">
+                            <label for="editIsPwd">PWD's:</label>
+                            <input type="checkbox" id="editIsPwd">
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditStudentModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Student</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Registration Modal -->
+    <div id="studentRegistrationModal" class="modal">
+        <div class="modal-content student-registration-modal">
+            <div class="modal-header">
+                <h3>Register New Student</h3>
+                <span class="close" onclick="closeStudentRegistrationModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="studentRegistrationForm" onsubmit="handleStudentRegistration(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adminFirstName">First Name:</label>
+                            <input type="text" id="adminFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminLastName">Last Name:</label>
+                            <input type="text" id="adminLastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminStudentIdInput">Student ID:</label>
+                        <input type="text" id="adminStudentIdInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminEmail">Email:</label>
+                        <input type="email" id="adminEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminAwardNumber">Award Number:</label>
+                        <input type="text" id="adminAwardNumber" required placeholder="Student's unique award number">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password:</label>
+                        <input type="password" id="adminPassword" required placeholder="Temporary password for student">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminConfirmPassword">Confirm Password:</label>
+                        <input type="password" id="adminConfirmPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminDepartment">Department:</label>
+                        <select id="adminDepartment" required>
+                            <option value="">Select Department</option>
+                            <option value="Department of Computer Studies">Department of Computer Studies</option>
+                            <option value="Department of Business and Management">Department of Business and Management</option>
+                            <option value="Department of Industrial Technology">Department of Industrial Technology</option>
+                            <option value="Department of General Teacher Training">Department of General Teacher Training</option>
+                            <option value="College of Criminal Justice Education">College of Criminal Justice Education</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPlace">From (Address/Origin):</label>
+                        <input type="text" id="adminPlace" placeholder="e.g., City, Province" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adminCourse">Course:</label>
+                            <input type="text" id="adminCourse" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminYear">Year Level:</label>
+                            <select id="adminYear" required>
+                                <option value="">Select Year</option>
+                                <option value="1st">1st Year</option>
+                                <option value="2nd">2nd Year</option>
+                                <option value="3rd">3rd Year</option>
+                                <option value="4th">4th Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPhoto">ID Picture (optional):</label>
+                        <input type="file" id="adminPhoto" accept="image/*">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adminIsIndigenous">INDIGENOUS PEOPLE:</label>
+                            <input type="checkbox" id="adminIsIndigenous">
+                        </div>
+                        <div class="form-group">
+                            <label for="adminIsPwd">PWD's:</label>
+                            <input type="checkbox" id="adminIsPwd">
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-primary" onclick="handleStudentRegistration(event)">Register Student</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeStudentRegistrationModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="toast">
+        <div class="toast-content">
+            <i class="fas fa-info-circle"></i>
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <!-- GranTES List Modal -->
+    <div id="grantesListModal" class="modal">
+        <div class="modal-content grantes-list-modal">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <div class="modal-title-section">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>List of GranTES Students</h3>
+                    </div>
+                    <div class="modal-actions">
+                        <span class="close" onclick="closeGrantesListModal()">&times;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="grantes-list-container">
+                    <div class="grantes-list-header">
+                        <div class="search-and-filters">
+                            <div class="search-container">
+                                <input type="text" id="grantesSearch" placeholder="Search students by name, course, department..." onkeyup="searchGrantes()">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="filter-controls">
+                                <select id="grantesStatusFilter" onchange="filterGrantesByStatus()">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="archived">Archived</option>
+                                </select>
+                                <select id="grantesYearFilter" onchange="filterGrantesByYear()">
+                                    <option value="">All Years</option>
+                                    <option value="1st">1st Year</option>
+                                    <option value="2nd">2nd Year</option>
+                                    <option value="3rd">3rd Year</option>
+                                    <option value="4th">4th Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grantes-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" id="totalGrantesCount">0</span>
+                                <span class="stat-label">Total Students</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Table Header -->
+                    <div class="grantes-table-header">
+                        <div class="table-header-cell name-col">
+                            <span>Student Name</span>
+                            <button class="sort-btn" onclick="sortGrantes('name')" title="Sort by name">
+                                <i class="fas fa-sort"></i>
+                            </button>
+                        </div>
+                        <div class="table-header-cell department-col">
+                            <span>Department</span>
+                            <button class="sort-btn" onclick="sortGrantes('department')" title="Sort by department">
+                                <i class="fas fa-sort"></i>
+                            </button>
+                        </div>
+                        <div class="table-header-cell course-col">
+                            <span>Course</span>
+                            <button class="sort-btn" onclick="sortGrantes('course')" title="Sort by course">
+                                <i class="fas fa-sort"></i>
+                            </button>
+                        </div>
+                        <div class="table-header-cell year-col">
+                            <span>Year</span>
+                            <button class="sort-btn" onclick="sortGrantes('year')" title="Sort by year">
+                                <i class="fas fa-sort"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grantes-list-content" id="grantesListContent">
+                        <!-- Student list will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emoji Picker Modal -->
+    <div id="emojiPickerModal" class="modal emoji-picker-modal">
+        <div class="modal-content emoji-modal-content">
+            <div class="emoji-modal-header">
+                <h3>Select Emoji</h3>
+                <button class="emoji-close-btn" onclick="closeEmojiPicker()" title="Close" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="emoji-search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="emojiSearchInput" placeholder="Search emoji..." onkeyup="filterEmojis()">
+            </div>
+            <div class="emoji-categories">
+                <button class="emoji-category-btn active" onclick="switchEmojiCategory('smileys')" data-category="smileys">😀 Smileys</button>
+                <button class="emoji-category-btn" onclick="switchEmojiCategory('people')" data-category="people">👤 People</button>
+                <button class="emoji-category-btn" onclick="switchEmojiCategory('animals')" data-category="animals">🐶 Animals</button>
+                <button class="emoji-category-btn" onclick="switchEmojiCategory('food')" data-category="food">🍕 Food</button>
+                <button class="emoji-category-btn" onclick="switchEmojiCategory('travel')" data-category="travel">✈️ Travel</button>
+                <button class="emoji-category-btn" onclick="switchEmojiCategory('activities')" data-category="activities">⚽ Activities</button>
+                <button class="emoji-category-btn" onclick="switchEmojiCategory('objects')" data-category="objects">💡 Objects</button>
+                <button class="emoji-category-btn" onclick="switchEmojiCategory('symbols')" data-category="symbols">❤️ Symbols</button>
+            </div>
+            <div class="emoji-grid-container">
+                <div class="emoji-grid" id="emojiGrid">
+                    <!-- Emojis will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Names List Modal -->
+    <!-- Image Lightbox Modal -->
+    <div id="imageLightbox" class="image-lightbox-modal" onclick="closeImageLightbox()">
+        <span class="image-lightbox-close" onclick="closeImageLightbox()">&times;</span>
+        <span class="image-lightbox-prev" onclick="event.stopPropagation(); lightboxPrevImage()">&#10094;</span>
+        <span class="image-lightbox-next" onclick="event.stopPropagation(); lightboxNextImage()">&#10095;</span>
+        <div class="image-lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightboxImage" src="" alt="Image view">
+            <div class="image-lightbox-counter">
+                <span id="lightboxCounter">1 / 1</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="studentNamesListModal" class="modal">
+        <div class="modal-content student-names-list-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-users"></i> Student Names List</h3>
+                <span class="close" onclick="closeStudentNamesListModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Messages Section -->
+                <div class="messages-section-container">
+                    <div class="messages-section-header">
+                        <h4><i class="fas fa-envelope"></i> Messages</h4>
+                        <div class="messages-tabs">
+                            <button class="message-tab-btn active" onclick="switchMessagesTab('unread')" id="unreadTabBtn">
+                                <i class="fas fa-envelope"></i> Unread
+                                <span class="message-count-badge" id="unreadCountBadge">0</span>
+                            </button>
+                            <button class="message-tab-btn" onclick="switchMessagesTab('read')" id="readTabBtn">
+                                <i class="fas fa-envelope-open"></i> Read
+                                <span class="message-count-badge" id="readCountBadge">0</span>
+                            </button>
+                            <button class="message-tab-btn" onclick="switchMessagesTab('all')" id="allTabBtn">
+                                <i class="fas fa-inbox"></i> All Messages
+                            </button>
+                        </div>
+                    </div>
+                    <div class="messages-container">
+                        <div id="messagesListContent" class="messages-list-content">
+                            <div class="loading-message">Loading messages...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Names Section -->
+                <div class="student-names-section-container">
+                    <div class="student-names-section-header">
+                        <h4><i class="fas fa-users"></i> Student Names List</h4>
+                    </div>
+                    <div class="student-names-search-container">
+                        <input type="text" id="studentNamesSearch" class="student-names-search-input" placeholder="Search students by name, ID, course, or department..." onkeyup="filterStudentNames()">
+                        <div class="student-names-filters">
+                            <select id="studentNamesFilterCourse" class="student-names-filter" onchange="filterStudentNames()">
+                                <option value="">All Courses</option>
+                                <option value="BSIT">BSIT</option>
+                                <option value="BSCS">BSCS</option>
+                                <option value="BSBA">BSBA</option>
+                                <option value="BSEd">BSEd</option>
+                                <option value="BSN">BSN</option>
+                            </select>
+                            <select id="studentNamesFilterDepartment" class="student-names-filter" onchange="filterStudentNames()">
+                                <option value="">All Departments</option>
+                                <option value="Department of Computer Studies">Department of Computer Studies</option>
+                                <option value="Department of Business and Management">Department of Business and Management</option>
+                                <option value="Department of Industrial Technology">Department of Industrial Technology</option>
+                                <option value="Department of General Teacher Training">Department of General Teacher Training</option>
+                                <option value="College of Criminal Justice Education">College of Criminal Justice Education</option>
+                            </select>
+                            <select id="studentNamesFilterStatus" class="student-names-filter" onchange="filterStudentNames()">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="student-names-stats">
+                        <span id="studentNamesCount">0 students</span>
+                    </div>
+                    <div class="student-names-list-container">
+                        <div id="studentNamesListContent" class="student-names-list-content">
+                            <div class="loading-message">Loading students...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Students Claimed Date Modal -->
+    <div id="studentsClaimedDateModal" class="modal">
+        <div class="modal-content student-names-list-modal" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-calendar-check"></i> Students Claimed Date</h3>
+                <span class="close" onclick="closeStudentsClaimedDateModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="student-claimed-date-container">
+                    <!-- Action Button -->
+                    <div style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
+                        <button class="btn btn-primary" onclick="openCreateClaimDateModal()" style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                            <i class="fas fa-plus"></i> Create Date
+                        </button>
+                    </div>
+                    
+                    <!-- Dates List View -->
+                    <div id="claimDatesListView" class="claim-dates-view">
+                        <h4 style="margin-bottom: 1rem; color: #1e293b;">Claim Dates</h4>
+                        <div id="claimDatesList" class="claim-dates-list">
+                            <div class="loading-message">Loading claim dates...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Students List View (shown when date is selected) -->
+                    <div id="studentsListView" class="students-list-view" style="display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="color: #1e293b;" id="selectedDateTitle">Students for Selected Date</h4>
+                            <button class="btn btn-secondary" onclick="backToDatesList()" style="padding: 8px 16px; background: #64748b; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                                <i class="fas fa-arrow-left"></i> Back to Dates
+                            </button>
+                        </div>
+                        <div class="student-claimed-date-search-container">
+                            <input type="text" id="claimedDateSearch" class="student-names-search-input" placeholder="Search students by name, ID, course, or department..." onkeyup="filterClaimedDateStudents()">
+                            <div class="student-names-filters">
+                                <select id="claimedDateFilterCourse" class="student-names-filter" onchange="filterClaimedDateStudents()">
+                                    <option value="">All Courses</option>
+                                    <option value="BSIT">BSIT</option>
+                                    <option value="BSCS">BSCS</option>
+                                    <option value="BSBA">BSBA</option>
+                                    <option value="BSEd">BSEd</option>
+                                    <option value="BSN">BSN</option>
+                                </select>
+                                <select id="claimedDateFilterDepartment" class="student-names-filter" onchange="filterClaimedDateStudents()">
+                                    <option value="">All Departments</option>
+                                    <option value="Department of Computer Studies">Department of Computer Studies</option>
+                                    <option value="Department of Business and Management">Department of Business and Management</option>
+                                    <option value="Department of Industrial Technology">Department of Industrial Technology</option>
+                                    <option value="Department of General Teacher Training">Department of General Teacher Training</option>
+                                    <option value="College of Criminal Justice Education">College of Criminal Justice Education</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="student-claimed-date-stats">
+                            <span id="claimedDateCount">0 students</span>
+                        </div>
+                        <div class="student-claimed-date-list-container">
+                            <div id="claimedDateListContent" class="student-names-list-content">
+                                <div class="loading-message">Loading students...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Claim Date Modal -->
+    <div id="createClaimDateModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-calendar-plus"></i> Create Claim Date</h3>
+                <span class="close" onclick="closeCreateClaimDateModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="createClaimDateForm" onsubmit="handleCreateClaimDate(event)">
+                    <div class="form-group">
+                        <label for="claimDateInput">Claim Date: <span class="required">*</span></label>
+                        <input type="date" id="claimDateInput" required style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; outline: none;">
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="claimDateDescription">Description (optional):</label>
+                        <textarea id="claimDateDescription" placeholder="Add a description for this claim date..." style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; outline: none; min-height: 80px; resize: vertical;"></textarea>
+                    </div>
+                    <div class="modal-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1; padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">Create Date</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeCreateClaimDateModal()" style="flex: 1; padding: 10px 20px; background: #64748b; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Form Modal -->
+    <div id="applicationFormModal" class="modal">
+        <div class="modal-content student-registration-modal" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-alt"></i> GranTES Application Form</h3>
+                <span class="close" onclick="closeApplicationForm()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="applicationForm" onsubmit="handleApplicationSubmission(event)">
+                    <div class="form-section-header">
+                        <h4><i class="fas fa-user"></i> Personal Information</h4>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appStudentId">Student ID: <span class="required">*</span></label>
+                            <input type="text" id="appStudentId" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appSex">Sex: <span class="required">*</span></label>
+                            <select id="appSex" required>
+                                <option value="">Select Sex</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appLastName">Last Name: <span class="required">*</span></label>
+                            <input type="text" id="appLastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appGivenName">Given Name: <span class="required">*</span></label>
+                            <input type="text" id="appGivenName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appExtName">Extension Name (Jr., Sr., III, etc.):</label>
+                            <input type="text" id="appExtName" placeholder="e.g., Jr., Sr., III">
+                        </div>
+                        <div class="form-group">
+                            <label for="appBirthdate">Birthdate: <span class="required">*</span></label>
+                            <input type="date" id="appBirthdate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section-header" style="margin-top: 2rem;">
+                        <h4><i class="fas fa-graduation-cap"></i> Academic Information</h4>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appProgramName">Complete Program Name: <span class="required">*</span></label>
+                            <select id="appProgramName" required>
+                                <option value="">Select Program</option>
+                                <optgroup label="Department of Computer Studies">
+                                    <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology (BSIT)</option>
+                                    <option value="Bachelor of Science in Computer Science">Bachelor of Science in Computer Science (BSCS)</option>
+                                    <option value="Bachelor of Science in Computer Engineering">Bachelor of Science in Computer Engineering (BSCpE)</option>
+                                </optgroup>
+                                <optgroup label="Department of Business and Management">
+                                    <option value="Bachelor of Science in Business Administration">Bachelor of Science in Business Administration (BSBA)</option>
+                                    <option value="Bachelor of Science in Hospitality Management">Bachelor of Science in Hospitality Management</option>
+                                    <option value="Bachelor of Science in Tourism Management">Bachelor of Science in Tourism Management</option>
+                                </optgroup>
+                                <optgroup label="Department of General Teacher Training">
+                                    <option value="Bachelor of Secondary Education">Bachelor of Secondary Education (BSEd)</option>
+                                </optgroup>
+                                <optgroup label="College of Criminal Justice Education">
+                                    <option value="Bachelor of Science in Criminology">Bachelor of Science in Criminology</option>
+                                </optgroup>
+                                <optgroup label="Department of Industrial Technology">
+                                    <option value="Bachelor of Science in Industrial Technology">Bachelor of Science in Industrial Technology</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="appYearLevel">Year Level: <span class="required">*</span></label>
+                            <select id="appYearLevel" required>
+                                <option value="">Select Year Level</option>
+                                <option value="1st">1st Year</option>
+                                <option value="2nd">2nd Year</option>
+                                <option value="3rd">3rd Year</option>
+                                <option value="4th">4th Year</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section-header" style="margin-top: 2rem;">
+                        <h4><i class="fas fa-users"></i> Family Information</h4>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appFatherName">Father's Name: <span class="required">*</span></label>
+                            <input type="text" id="appFatherName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appMotherName">Mother's Name: <span class="required">*</span></label>
+                            <input type="text" id="appMotherName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appFamilyIncome">Family Monthly Income: <span class="required">*</span></label>
+                            <input type="number" id="appFamilyIncome" required min="0" step="0.01" placeholder="0.00" oninput="updateIncomeRange(event)">
+                        </div>
+                        <div class="form-group">
+                            <label for="appIncomeRange">Income Range:</label>
+                            <select id="appIncomeRange" disabled style="background: #f3f4f6; color: #6b7280;">
+                                <option value="">Will auto-update based on income</option>
+                                <option value="Below 10,000">Below ₱10,000</option>
+                                <option value="10,000 - 20,000">₱10,000 - ₱20,000</option>
+                                <option value="20,000 - 30,000">₱20,000 - ₱30,000</option>
+                                <option value="30,000 - 50,000">₱30,000 - ₱50,000</option>
+                                <option value="50,000 - 75,000">₱50,000 - ₱75,000</option>
+                                <option value="75,000 - 100,000">₱75,000 - ₱100,000</option>
+                                <option value="Above 100,000">Above ₱100,000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section-header" style="margin-top: 2rem;">
+                        <h4><i class="fas fa-map-marker-alt"></i> Address Information</h4>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appProvince">Province: <span class="required">*</span></label>
+                            <select id="appProvince" required onchange="updateMunicipalities()">
+                                <option value="">Select Province</option>
+                                <option value="Surigao del Sur">Surigao del Sur</option>
+                                <option value="Surigao del Norte">Surigao del Norte</option>
+                                <option value="Agusan del Sur">Agusan del Sur</option>
+                                <option value="Agusan del Norte">Agusan del Norte</option>
+                                <option value="Dinagat Islands">Dinagat Islands</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <input type="text" id="appProvinceOther" placeholder="Enter your province" style="display: none; margin-top: 0.5rem;">
+                        </div>
+                        <div class="form-group">
+                            <label for="appMunicipality">Municipality: <span class="required">*</span></label>
+                            <select id="appMunicipality" required onchange="checkMunicipalityOther()">
+                                <option value="">Select Municipality</option>
+                            </select>
+                            <input type="text" id="appMunicipalityOther" placeholder="Enter your municipality" style="display: none; margin-top: 0.5rem;">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label for="appStreetBarangay">Street & Barangay: <span class="required">*</span></label>
+                            <input type="text" id="appStreetBarangay" required placeholder="e.g., Purok 5, Brgy. Cantilan">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="appZipCode">Zip Code: <span class="required">*</span></label>
+                            <input type="text" id="appZipCode" required placeholder="8317" maxlength="4">
+                        </div>
+                    </div>
+
+                    <div class="form-section-header" style="margin-top: 2rem;">
+                        <h4><i class="fas fa-phone"></i> Contact Information</h4>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appContactNumber">Contact Number: <span class="required">*</span></label>
+                            <input type="tel" id="appContactNumber" required placeholder="Enter contact number">
+                        </div>
+                        <div class="form-group">
+                            <label for="appEmail">Email Address: <span class="required">*</span></label>
+                            <input type="email" id="appEmail" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appPassword">Password (Optional):</label>
+                            <input type="password" id="appPassword" placeholder="Enter password (optional - will be auto-generated if left blank)">
+                            <small style="display: block; margin-top: 5px; color: #64748b; font-size: 12px;">If left blank, a temporary password will be generated</small>
+                        </div>
+                    </div>
+
+                    <div class="form-section-header" style="margin-top: 2rem;">
+                        <h4><i class="fas fa-id-card"></i> Photo Upload</h4>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="appPhoto">2x2 ID Photo: <span class="required">*</span></label>
+                            <input type="file" id="appPhoto" accept="image/*" required onchange="previewPhoto(event)">
+                            <small style="display: block; margin-top: 5px; color: #64748b; font-size: 12px;">Upload a 2x2 ID photo (JPG, PNG, or similar image format)</small>
+                            <div id="photoPreview" style="margin-top: 10px; display: none;">
+                                <img id="photoPreviewImg" src="" alt="Photo Preview" style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; border-radius: 4px; padding: 5px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section-header" style="margin-top: 2rem;">
+                        <h4><i class="fas fa-info-circle"></i> Additional Information</h4>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="appPwd" style="width: auto;">
+                                <span>Person with Disability (PWD)</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="appIndigenous" style="width: auto;">
+                                <span>Indigenous People Group</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+                        <button type="button" class="btn btn-secondary" onclick="closeApplicationForm()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle role change in login form
+        function handleRoleChange() {
+            const roleSelect = document.getElementById('loginRole');
+            const emailGroup = document.getElementById('loginEmailGroup');
+            const awardNumberGroup = document.getElementById('loginAwardNumberGroup');
+            const emailInput = document.getElementById('loginEmail');
+            const awardNumberInput = document.getElementById('loginAwardNumber');
+            
+            if (roleSelect.value === 'student') {
+                // Show award number field, hide email field
+                emailGroup.style.display = 'none';
+                awardNumberGroup.style.display = 'block';
+                emailInput.required = false;
+                awardNumberInput.required = true;
+            } else if (roleSelect.value === 'admin') {
+                // Show email field, hide award number field
+                emailGroup.style.display = 'block';
+                awardNumberGroup.style.display = 'none';
+                emailInput.required = true;
+                awardNumberInput.required = false;
+            } else {
+                // Hide both fields when no role is selected
+                emailGroup.style.display = 'block';
+                awardNumberGroup.style.display = 'none';
+                emailInput.required = false;
+                awardNumberInput.required = false;
+            }
+        }
+
+        // Initialize the form on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            handleRoleChange();
+        });
+
+        // Filter updates by category
+        function filterUpdates(category) {
+            const items = document.querySelectorAll('.update-item');
+            const tabs = document.querySelectorAll('.updates-announcements-tabs .tab-btn');
+            
+            // Update active tab
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter items
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Student Registration Functions
+        function openStudentRegistrationModal() {
+            document.getElementById('studentRegistrationModal').style.display = 'block';
+            // Clear form
+            document.getElementById('studentRegistrationForm').reset();
+        }
+
+        function closeStudentRegistrationModal() {
+            document.getElementById('studentRegistrationModal').style.display = 'none';
+        }
+
+        // handleStudentRegistration moved to script.js for API integration
+        // This old localStorage version has been removed
+
+        function showNotification(message, type = 'info') {
+            const toast = document.getElementById('notificationToast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 5000);
+        }
+
+        // updateAdminStats function moved to script.js - now loads from database
+
+        // GranTES List Functions
+        function showGrantesList() {
+            document.getElementById('grantesListModal').style.display = 'block';
+            loadGrantesList();
+        }
+
+        function closeGrantesListModal() {
+            document.getElementById('grantesListModal').style.display = 'none';
+        }
+
+        // Global variables for sorting and filtering
+        let currentSortField = 'name';
+        let currentSortDirection = 'asc';
+        let filteredStudents = [];
+
+        async function loadGrantesList() {
+            // Prefer database; fallback to localStorage
+            let students = [];
+            try {
+                if (typeof getStudentsFromDatabase === 'function') {
+                    students = await getStudentsFromDatabase();
+                }
+            } catch (e) {
+                // ignore and fallback
+            }
+            if (!Array.isArray(students) || students.length === 0) {
+                students = JSON.parse(localStorage.getItem('students') || '[]');
+            }
+            const container = document.getElementById('grantesListContent');
+            const totalCountElement = document.getElementById('totalGrantesCount');
+            
+            // Apply current filters
+            filteredStudents = applyFilters(students);
+            
+            // Update statistics
+            totalCountElement.textContent = students.length;
+            
+            if (filteredStudents.length === 0) {
+                container.innerHTML = `
+                    <div class="no-grantes">
+                        <i class="fas fa-users"></i>
+                        <h4>No Students Found</h4>
+                        <p>${students.length === 0 ? 'No GranTES students have been registered yet.' : 'No students match your current filters.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort the filtered students
+            const sortedStudents = sortStudents(filteredStudents, currentSortField, currentSortDirection);
+
+            container.innerHTML = sortedStudents.map(student => {
+                const firstName = student.firstName || student.first_name || '';
+                const lastName = student.lastName || student.last_name || '';
+                const email = student.email || '';
+                const course = student.course || '';
+                const year = student.year || student.yearLevel || student.year_level || '';
+                const department = student.department || '';
+                const awardNumber = student.awardNumber || student.award_number || '';
+                return `
+                <div class="grantes-student-item" 
+                     data-name="${firstName} ${lastName}" 
+                     data-course="${course}" 
+                     data-year="${year}" 
+                     data-department="${department}"
+                     data-status="${student.status || 'active'}"
+                     data-email="${email}"
+                     data-award="${awardNumber}">
+                    <div class="grantes-student-name">
+                        <i class="fas fa-user-graduate"></i>
+                        <div>
+                            <div>${firstName} ${lastName}</div>
+                            <div style="font-size: 0.75rem; color: #64748b; font-weight: 400;">
+                                ${email || awardNumber || 'No contact info'}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grantes-student-info">
+                        <div class="grantes-student-department">${department || 'Not specified'}</div>
+                    </div>
+                    <div class="grantes-student-info">
+                        <div class="grantes-student-course">${course || 'Not specified'}</div>
+                    </div>
+                    <div class="grantes-student-info">
+                        <div class="grantes-student-year">${year || 'N/A'} Year</div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'archived': return 'Archived';
+                default: return 'Active';
+            }
+        }
+
+        function applyFilters(students) {
+            const searchTerm = (document.getElementById('grantesSearch')?.value || '').trim().toLowerCase();
+            const statusFilter = document.getElementById('grantesStatusFilter')?.value || '';
+            const yearFilter = document.getElementById('grantesYearFilter')?.value || '';
+            
+            return students.filter(student => {
+                const firstName = (student.firstName || student.first_name || '').toLowerCase();
+                const lastName = (student.lastName || student.last_name || '').toLowerCase();
+                const email = (student.email || '').toLowerCase();
+                const award = (student.awardNumber || student.award_number || '').toLowerCase();
+                const course = (student.course || '').toLowerCase();
+                const department = (student.department || '').toLowerCase();
+                const year = (student.year || student.yearLevel || student.year_level || '').toLowerCase();
+                const status = (student.status || 'active');
+                const matchesSearch = !searchTerm || firstName.includes(searchTerm) || lastName.includes(searchTerm) || email.includes(searchTerm) || award.includes(searchTerm) || course.includes(searchTerm) || department.includes(searchTerm) || year.includes(searchTerm);
+                
+                const matchesStatus = !statusFilter || status === statusFilter;
+                const matchesYear = !yearFilter || year.includes(yearFilter.toLowerCase());
+                
+                return matchesSearch && matchesStatus && matchesYear;
+            });
+        }
+
+        function sortStudents(students, field, direction) {
+            return [...students].sort((a, b) => {
+                let aValue, bValue;
+                
+                switch(field) {
+                    case 'name':
+                        aValue = `${a.firstName || a.first_name || ''} ${a.lastName || a.last_name || ''}`.toLowerCase();
+                        bValue = `${b.firstName || b.first_name || ''} ${b.lastName || b.last_name || ''}`.toLowerCase();
+                        break;
+                    case 'department':
+                        aValue = (a.department || '').toLowerCase();
+                        bValue = (b.department || '').toLowerCase();
+                        break;
+                    case 'course':
+                        aValue = (a.course || '').toLowerCase();
+                        bValue = (b.course || '').toLowerCase();
+                        break;
+                    case 'status':
+                        aValue = (a.status || 'active').toLowerCase();
+                        bValue = (b.status || 'active').toLowerCase();
+                        break;
+                    default:
+                        aValue = (a[field] || a[field + '_'] || '').toString().toLowerCase();
+                        bValue = (b[field] || b[field + '_'] || '').toString().toLowerCase();
+                }
+                
+                if (aValue < bValue) return direction === 'asc' ? -1 : 1;
+                if (aValue > bValue) return direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        function sortGrantes(field) {
+            if (currentSortField === field) {
+                currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortField = field;
+                currentSortDirection = 'asc';
+            }
+            
+            // Update sort button icons
+            document.querySelectorAll('.sort-btn i').forEach(icon => {
+                icon.className = 'fas fa-sort';
+            });
+            
+            const currentSortBtn = document.querySelector(`[onclick="sortGrantes('${field}')"] i`);
+            if (currentSortBtn) {
+                currentSortBtn.className = currentSortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+            }
+            
+            loadGrantesList();
+        }
+
+        function filterGrantesByStatus() {
+            loadGrantesList();
+        }
+
+        function filterGrantesByYear() {
+            loadGrantesList();
+        }
+
+        function searchGrantes() {
+            loadGrantesList();
+        }
+
+        function viewStudentProfile(studentId) {
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const student = students.find(s => s.id == studentId);
+            
+            if (student) {
+                // Create a detailed profile modal or navigate to student details
+                const profileInfo = `
+                    <div style="padding: 1rem; background: white; border-radius: 8px; margin: 1rem 0;">
+                        <h3 style="color: #1e293b; margin-bottom: 1rem;">
+                            <i class="fas fa-user-graduate" style="color: #667eea; margin-right: 0.5rem;"></i>
+                            ${student.firstName} ${student.lastName}
+                        </h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
+                            <div><strong>Email:</strong> ${student.email || 'Not provided'}</div>
+                            <div><strong>Award Number:</strong> ${student.awardNumber || 'Not provided'}</div>
+                            <div><strong>Student ID:</strong> ${student.studentId || 'Not provided'}</div>
+                            <div><strong>Course:</strong> ${student.course || 'Not provided'}</div>
+                            <div><strong>Year:</strong> ${student.year || 'Not provided'}</div>
+                            <div><strong>Department:</strong> ${student.department || 'Not provided'}</div>
+                            <div><strong>Status:</strong> 
+                                <span class="grantes-student-status ${student.status || 'active'}">
+                                    ${getStatusText(student.status)}
+                                </span>
+                            </div>
+                            <div><strong>Registration Date:</strong> ${student.registrationDate || 'Not available'}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // You could show this in a modal or alert
+                alert(`Student Profile:\n\n${student.firstName} ${student.lastName}\nEmail: ${student.email || 'Not provided'}\nAward Number: ${student.awardNumber || 'Not provided'}\nCourse: ${student.course || 'Not provided'}\nYear: ${student.year || 'Not provided'}\nDepartment: ${student.department || 'Not provided'}\nStatus: ${getStatusText(student.status)}`);
+            } else {
+                showToast('Student not found', 'error');
+            }
+        }
+
+        function sendMessageToStudent(studentId) {
+            const students = JSON.parse(localStorage.getItem('students') || '[]');
+            const student = students.find(s => s.id == studentId);
+            
+            if (student) {
+                // Open chat and focus on input
+                if (typeof openChat === 'function') {
+                    openChat();
+                    // Focus on chat input after a short delay
+                    setTimeout(() => {
+                        const chatInput = document.getElementById('chatInput');
+                        if (chatInput) {
+                            chatInput.focus();
+                            chatInput.value = `@${student.firstName} ${student.lastName} `;
+                        }
+                    }, 300);
+                } else {
+                    showToast('Chat feature not available', 'warning');
+                }
+            } else {
+                showToast('Student not found', 'error');
+            }
+        }
+
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const grantesModal = document.getElementById('grantesListModal');
+            if (event.target === grantesModal) {
+                closeGrantesListModal();
+            }
+        }
+
+        // Handle audience selection change
+        function handleAudienceChange() {
+            const audienceSelect = document.getElementById('postAudience');
+            const courseSelect = document.getElementById('postCourse');
+            
+            if (audienceSelect.value === 'specific') {
+                courseSelect.style.display = 'block';
+            } else {
+                courseSelect.style.display = 'none';
+            }
+        }
+
+        // Post functions now use the ones from script.js that connect to database
+
+        // loadPostsFeed function removed - using the one from script.js instead
+
+        // Post action functions removed - using the ones from script.js instead
+
+        // Initialize admin homepage
+        function initializeAdminHomepage() {
+            loadAdminPosts(); // Use the function from script.js
+            
+            // Add event listener for audience change
+            const audienceSelect = document.getElementById('postAudience');
+            if (audienceSelect) {
+                audienceSelect.addEventListener('change', handleAudienceChange);
+            }
+        }
+
+        // Initialize when admin dashboard loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're on admin dashboard and initialize
+            if (document.getElementById('admin-homepage')) {
+                initializeAdminHomepage();
+            }
+        });
+    </script>
+    
+    <!-- Live timer controller -->
+    <script>
+        (function() {
+            let liveTimerIntervalId = null;
+            let liveStartEpochMs = null;
+
+            function formatElapsed(ms) {
+                const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                const two = n => String(n).padStart(2, '0');
+                return hours > 0 ? `${two(hours)}:${two(minutes)}:${two(seconds)}` : `${two(minutes)}:${two(seconds)}`;
+            }
+
+            function updateElapsedNow() {
+                const display = document.getElementById('liveElapsedTime');
+                if (!display) return;
+                if (!liveStartEpochMs) {
+                    display.textContent = '00:00';
+                    return;
+                }
+                display.textContent = formatElapsed(Date.now() - liveStartEpochMs);
+            }
+
+            function startLiveTimer() {
+                if (liveTimerIntervalId) return; // already running
+                liveStartEpochMs = Date.now();
+                updateElapsedNow();
+                liveTimerIntervalId = setInterval(updateElapsedNow, 1000);
+            }
+
+            function stopLiveTimer() {
+                if (liveTimerIntervalId) {
+                    clearInterval(liveTimerIntervalId);
+                    liveTimerIntervalId = null;
+                }
+                liveStartEpochMs = null;
+                updateElapsedNow();
+            }
+
+            // Wire into existing buttons without changing existing logic
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleBtn = document.getElementById('toggleLiveBtn');
+                const endBtn = document.querySelector('.live-end-btn');
+
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', function() {
+                        // Defer until the existing handler updates the UI/text
+                        setTimeout(function() {
+                            const label = (toggleBtn.querySelector('span')?.textContent || '').toLowerCase();
+                            if (label.includes('stop')) {
+                                startLiveTimer();
+                            } else {
+                                stopLiveTimer();
+                            }
+                        }, 0);
+                    });
+                }
+
+                if (endBtn) {
+                    endBtn.addEventListener('click', function() {
+                        stopLiveTimer();
+                    });
+                }
+            });
+
+            // Expose in case other scripts want to control it
+            window.__granTESLiveTimer = { start: startLiveTimer, stop: stopLiveTimer };
+        })();
+    </script>
+    
+    <!-- Auto-expand textareas functionality -->
+    <script>
+        // Auto-expand textareas when typing
+        function autoExpandTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+        }
+
+        // Add event listeners to all textareas for auto-expansion
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to add auto-expand to textareas
+            function addAutoExpandToTextareas() {
+                const textareas = document.querySelectorAll('textarea');
+                textareas.forEach(textarea => {
+                    // Remove existing listeners to avoid duplicates
+                    textarea.removeEventListener('input', textarea.autoExpandHandler);
+                    
+                    // Create new handler
+                    textarea.autoExpandHandler = function() {
+                        autoExpandTextarea(this);
+                    };
+                    
+                    // Add the event listener
+                    textarea.addEventListener('input', textarea.autoExpandHandler);
+                    
+                    // Set initial height
+                    autoExpandTextarea(textarea);
+                });
+            }
+            
+            // Add auto-expand to existing textareas
+            addAutoExpandToTextareas();
+            
+            // Watch for new textareas added dynamically
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach(function(node) {
+                            if (node.nodeType === 1) { // Element node
+                                if (node.tagName === 'TEXTAREA') {
+                                    node.autoExpandHandler = function() {
+                                        autoExpandTextarea(this);
+                                    };
+                                    node.addEventListener('input', node.autoExpandHandler);
+                                    autoExpandTextarea(node);
+                                }
+                                // Check for textareas within added nodes
+                                const textareas = node.querySelectorAll ? node.querySelectorAll('textarea') : [];
+                                textareas.forEach(textarea => {
+                                    textarea.autoExpandHandler = function() {
+                                        autoExpandTextarea(this);
+                                    };
+                                    textarea.addEventListener('input', textarea.autoExpandHandler);
+                                    autoExpandTextarea(textarea);
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // Start observing
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+    </script>
+</body>
+</html>
